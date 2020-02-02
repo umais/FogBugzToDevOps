@@ -49,7 +49,13 @@ namespace DevOpsImporter.Entities
                 ; }
 
         public string Priority { get; set; }
+
+        public string Tags { get; set; }
             
+        public string RelatedBugs { get; set; }
+
+        public string KanBanColumn { get; set; }
+
         public List<Event> EventList { get; set; }
     }
 }

@@ -71,7 +71,7 @@ namespace DevOpsImporter.REST
             
                 request= new RestRequest("search", Method.POST);
                 request.AddHeader("Content-Type", "application/json");
-                request.AddJsonBody(new { token = token, q = Id, cols = "sTitle,sStatus,sLatestTextSummary,sPriority,sArea,sProject,sFixFor,sCategory,ixPersonAssignedTo" });
+                request.AddJsonBody(new { token = token, q = Id, cols = "sTitle,sStatus,sLatestTextSummary,sPriority,sArea,sProject,sFixFor,sCategory,ixPersonAssignedTo,ixKanbanColumn,tags,ixRelatedBugs" });
                 var response2 = Client.Execute(request);
                 JObject res2 = JsonConvert.DeserializeObject<JObject>(response2.Content);
                 var Case = res2.SelectToken("data.cases[0]");
@@ -82,6 +82,14 @@ namespace DevOpsImporter.REST
                 var CaseArea= Case.SelectToken("sArea").ToString();
                 var CaseProject = Case.SelectToken("sProject").ToString();
                 var CaseMilestone= Case.SelectToken("sFixFor").ToString();
+                var KanBanColumnId = Case.SelectToken("ixKanbanColumn");
+                var tags= Case.SelectToken("tags");
+                var ixRelatedBugs= Case.SelectToken("ixRelatedBugs");
+                var tagString = "";
+                foreach (JObject tag in tags)
+                {
+                    tagString += tag.ToString();
+                }
                 var CaseAssignedTo = "";
                 try
                 {
